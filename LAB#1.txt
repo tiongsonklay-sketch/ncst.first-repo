@@ -1,0 +1,72 @@
+-- Create Departments Table
+CREATE TABLE Departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(50),
+    location VARCHAR(50)
+);
+
+-- Create Employees Table
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    salary DECIMAL(10,2),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+-- Create Projects Table
+CREATE TABLE Projects (
+    project_id INT PRIMARY KEY,
+    project_name VARCHAR(50),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+-- Create Assignments Table (Employee-Project Relationship)
+CREATE TABLE Assignments (
+    employee_id INT,
+    project_id INT,
+    PRIMARY KEY (employee_id, project_id),
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+);
+
+INSERT INTO Departments (department_id, department_name, location) VALUES
+(1, 'HR', 'New York'),
+(2, 'IT', 'San Francisco'),
+(3, 'Finance', 'Los Angeles'),
+(4, 'Marketing', 'Chicago');
+
+INSERT INTO Employees (employee_id, name, salary, department_id) VALUES
+(101, 'Alice', 50000, 1),
+(102, 'Bob', 60000, 2),
+(103, 'Charlie', 55000, 3),
+(104, 'David', 70000, 2),
+(105, 'Eve', 72000, 1),
+(106, 'Frank', 48000, 3),
+(107, 'Grace', 51000, 4),
+(108, 'Helen', 65000, 4),
+(109, 'Ian', 77000, 2),
+(110, 'Jack', 53000, 3);
+
+INSERT INTO Projects (project_id, project_name, department_id) VALUES
+(1, 'Project Alpha', 2),
+(2, 'Project Beta', 3),
+(3, 'Project Gamma', 1),
+(4, 'Project Delta', 4),
+(5, 'Project Epsilon', 2),
+(6, 'Project Zeta', 3);
+
+INSERT INTO Assignments (employee_id, project_id) VALUES
+(101, 3), -- Alice works on Project Gamma
+(102, 1), -- Bob works on Project Alpha
+(103, 2), -- Charlie works on Project Beta
+(104, 1), -- David works on Project Alpha
+(104, 5), -- David also works on Project Epsilon
+(105, 3), -- Eve works on Project Gamma
+(106, 6), -- Frank works on Project Zeta
+(107, 4), -- Grace works on Project Delta
+(108, 4), -- Helen works on Project Delta
+(109, 1), -- Ian works on Project Alpha
+(109, 5), -- Ian also works on Project Epsilon
+(110, 2); -- Jack works on Project Beta
